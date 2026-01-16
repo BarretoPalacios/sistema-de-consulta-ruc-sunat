@@ -1,0 +1,10 @@
+venv
+padron.txt
+__pycache__
+contribuyentes.db
+padron.txt
+*pyc
+*.db
+*.sqlite
+*.sqlite3
+.env

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0"><i class="bi bi-check-circle"></i> Buscar por Estado</h3>
+            </div>
+            <div class="card-body">
+                <form action="/buscar-estado/resultado" method="post">
+                    <div class="mb-4">
+                        <label for="estado" class="form-label">
+                            <strong>Estado del Contribuyente</strong>
+                        </label>
+                        <select class="form-select form-select-lg" 
+                                id="estado" 
+                                name="estado" 
+                                required
+                                autofocus>
+                            <option value="" selected disabled>Seleccione un estado</option>
+                            {% if estados %}
+                                {% for estado_item in estados %}
+                                <option value="{{ estado_item.estado }}">
+                                    {{ estado_item.estado }} ({{ estado_item.cantidad }} registros)
+                                </option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="ACTIVO">ACTIVO</option>
+                                <option value="HABIDO">HABIDO</option>
+                                <option value="NO HABIDO">NO HABIDO</option>
+                                <option value="BAJA">BAJA</option>
+                                <option value="SUSPENSION TEMPORAL">SUSPENSION TEMPORAL</option>
+                            {% endif %}
+                        </select>
+                        <div class="form-text">
+                            Seleccione el estado del contribuyente que desea buscar.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="limit" class="form-label">
+                            <strong>Límite de resultados</strong>
+                        </label>
+                        <select class="form-select" id="limit" name="limit">
+                            <option value="20" selected>20 resultados</option>
+                            <option value="50">50 resultados</option>
+                            <option value="100">100 resultados</option>
+                            <option value="200">200 resultados</option>
+                        </select>
+                    </div>
+                    
+                    {% if estados %}
+                    <div class="mb-4">
+                        <h5><i class="bi bi-list-ul"></i> Estados más comunes:</h5>
+                        <div class="row mt-2">
+                            {% for estado_item in estados[:6] %}
+                            <div class="col-md-4 mb-2">
+                                <button type="button" 
+                                        onclick="seleccionarEstado('{{ estado_item.estado }}')" 
+                                        class="btn btn-outline-info w-100">
+                                    {{ estado_item.estado }}
+                                    <span class="badge bg-secondary">{{ estado_item.cantidad }}</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/" class="btn btn-secondary me-md-2">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-info">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="alert alert-light mt-4">
+                    <h5><i class="bi bi-lightbulb"></i> Estados comunes:</h5>
+                    <ul class="mb-0">
+                        <li><strong>ACTIVO:</strong> Contribuyente activo y operativo</li>
+                        <li><strong>HABIDO:</strong> Contribuyente habilitado para operar</li>
+                        <li><strong>NO HABIDO:</strong> Contribuyente no habilitado temporalmente</li>
+                        <li><strong>BAJA:</strong> Contribuyente dado de baja</li>
+                        <li><strong>SUSPENSION TEMPORAL:</strong> Suspendido temporalmente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function seleccionarEstado(estado) {
+    document.getElementById('estado').value = estado;
+}
+</script>
+{% endblock %}

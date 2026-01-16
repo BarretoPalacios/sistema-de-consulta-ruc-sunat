@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4"><i class="bi bi-bar-chart"></i> Estadísticas del Sistema</h1>
+        
+        {% if result.success %}
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-graph-up"></i> Estadísticas de Uso</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Consultas totales:</th>
+                                <td class="text-end">{{ result.data.estadisticas.total_consultas }}</td>
+                            </tr>
+                            <tr>
+                                <th>Consultas exitosas:</th>
+                                <td class="text-end">{{ result.data.estadisticas.consultas_exitosas }}</td>
+                            </tr>
+                            <tr>
+                                <th>Consultas fallidas:</th>
+                                <td class="text-end">{{ result.data.estadisticas.consultas_fallidas }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tasa de éxito:</th>
+                                <td class="text-end">{{ result.data.estadisticas.tasa_exito }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tiempo promedio:</th>
+                                <td class="text-end">{{ result.data.estadisticas.tiempo_promedio_ms }} ms</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="bi bi-database"></i> Base de Datos</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Total registros:</th>
+                                <td class="text-end">{{ result.data.base_datos.total_registros }}</td>
+                            </tr>
+                            <tr>
+                                <th>Archivo:</th>
+                                <td class="text-end">{{ result.data.base_datos.ruta }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle"></i>
+            <strong>Error cargando estadísticas:</strong> {{ result.error }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">
+                <i class="bi bi-house"></i> Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

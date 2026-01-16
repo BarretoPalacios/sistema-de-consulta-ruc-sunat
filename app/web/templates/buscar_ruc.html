@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="bi bi-upc-scan"></i> Buscar por RUC</h3>
+            </div>
+            <div class="card-body">
+                <form action="/buscar/resultado" method="post" id="buscarForm">
+                    <div class="mb-4">
+                        <label for="ruc" class="form-label">
+                            <strong>Número de RUC (11 dígitos)</strong>
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="ruc" 
+                               name="ruc" 
+                               placeholder="Ejemplo: 10452159428"
+                               pattern="\d{11}"
+                               maxlength="11"
+                               required
+                               autofocus>
+                        <div class="form-text">
+                            Ingrese el RUC de 11 dígitos sin espacios ni guiones.
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/" class="btn btn-secondary me-md-2">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Buscar RUC
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="alert alert-light mt-4">
+                    <h5><i class="bi bi-lightbulb"></i> Tipos de RUC comunes:</h5>
+                    <ul class="mb-0">
+                        <li><strong>10</strong>XXXXXXX - Personas naturales</li>
+                        <li><strong>20</strong>XXXXXXX - Empresas</li>
+                        <li><strong>15</strong>XXXXXXX - Personas naturales con negocio</li>
+                        <li><strong>17</strong>XXXXXXX - Extranjeros sin DNI</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow mt-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Búsquedas Recientes</h5>
+            </div>
+            <div class="card-body">
+                <div class="row" id="recientes">
+                    <!-- Se llena con JavaScript -->
+                    <div class="text-center text-muted">
+                        <i class="bi bi-hourglass-split display-6"></i>
+                        <p class="mt-2">No hay búsquedas recientes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('buscarForm').addEventListener('submit', function(e) {
+    const ruc = document.getElementById('ruc').value;
+    
+    // Guardar en localStorage
+    let recientes = JSON.parse(localStorage.getItem('ruc_recientes') || '[]');
+    
+    // Agregar al inicio si no existe
+    if (!recientes.includes(ruc)) {
+        recientes.unshift(ruc);
+        // Mantener solo los últimos 5
+        recientes = recientes.slice(0, 5);
+        localStorage.setItem('ruc_recientes', JSON.stringify(recientes));
+    }
+    
+    // Mostrar búsquedas recientes
+    mostrarRecientes();
+});
+
+function mostrarRecientes() {
+    const recientes = JSON.parse(localStorage.getItem('ruc_recientes') || '[]');
+    const container = document.getElementById('recientes');
+    
+    if (recientes.length === 0) {
+        container.innerHTML = `
+            <div class="text-center text-muted">
+                <i class="bi bi-hourglass-split display-6"></i>
+                <p class="mt-2">No hay búsquedas recientes</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '<div class="row">';
+    recientes.forEach(ruc => {
+        html += `
+            <div class="col-md-6 mb-2">
+                <div class="card">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><strong>${ruc}</strong></span>
+                            <div>
+                                <a href="/buscar/resultado?ruc=${ruc}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-search"></i>
+                                </a>
+                                <button onclick="copiarRUC('${ruc}')" 
+                                        class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function copiarRUC(ruc) {
+    navigator.clipboard.writeText(ruc).then(() => {
+        alert(`RUC ${ruc} copiado al portapapeles`);
+    });
+}
+
+// Mostrar recientes al cargar la página
+document.addEventListener('DOMContentLoaded', mostrarRecientes);
+</script>
+{% endblock %}

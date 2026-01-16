@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-geo-alt"></i> Resultados por Departamento
+                </h3>
+            </div>
+            
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>Departamento:</strong> {{ departamento }} | 
+                    <strong>Resultados:</strong> {{ result.count }} | 
+                    <strong>Límite:</strong> {{ limit }}
+                </div>
+                
+                {% if result.success and result.data %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>RUC</th>
+                                <th>Nombre / Razón Social</th>
+                                <th>Estado</th>
+                                <th>Dirección</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in result.data %}
+                            <tr>
+                                <td>
+                                    <strong>{{ item.ruc }}</strong>
+                                </td>
+                                <td>
+                                    {{ item.nombre_razon_social[:50] }}{% if item.nombre_razon_social and item.nombre_razon_social|length > 50 %}...{% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge {% if item.estado_contribuyente == 'ACTIVO' %}bg-success{% elif item.estado_contribuyente == 'HABIDO' %}bg-primary{% else %}bg-warning{% endif %}">
+                                        {{ item.estado_contribuyente or 'N/A' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ item.direccion_simple[:40] }}{% if item.direccion_simple|length > 40 %}...{% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="/buscar/resultado?ruc={{ item.ruc }}" 
+                                           class="btn btn-outline-primary">
+                                            <i class="bi bi-eye"></i> Ver
+                                        </a>
+                                        <a href="/exportar/descargar?ruc={{ item.ruc }}&formato=json" 
+                                           class="btn btn-outline-success">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-3">
+                    <p class="text-muted">
+                        Mostrando {{ result.count }} resultados para el departamento {{ departamento }}
+                    </p>
+                </div>
+                
+                {% elif not result.success %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Error en la búsqueda:</strong> {{ result.error }}
+                </div>
+                
+                <div class="text-center py-4">
+                    <i class="bi bi-geo-alt display-1 text-muted"></i>
+                    <h4 class="mt-3">No se encontraron resultados</h4>
+                    <p class="text-muted">Verifica el código del departamento e intenta nuevamente</p>
+                </div>
+                
+                {% else %}
+                <div class="alert alert-warning">
+                    <i class="bi bi-search"></i>
+                    <strong>No se encontraron resultados</strong> para el departamento {{ departamento }}
+                </div>
+                {% endif %}
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="/buscar-departamento" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Nueva búsqueda
+                    </a>
+                    <a href="/" class="btn btn-primary">
+                        <i class="bi bi-house"></i> Ir al inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

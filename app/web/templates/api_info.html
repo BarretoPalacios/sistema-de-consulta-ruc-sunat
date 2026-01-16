@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4"><i class="bi bi-code-slash"></i> Documentación de la API</h1>
+        
+        <div class="alert alert-primary">
+            <i class="bi bi-info-circle"></i>
+            <strong>Base URL:</strong> http://localhost:8000/api/v1
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-search"></i> Endpoints de Búsqueda</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/buscar/{ruc}</code></td>
+                                <td>Buscar por RUC</td>
+                            </tr>
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/buscar/nombre/{nombre}</code></td>
+                                <td>Buscar por nombre</td>
+                            </tr>
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/buscar/departamento/{departamento}</code></td>
+                                <td>Buscar por departamento</td>
+                            </tr>
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/buscar/estado/{estado}</code></td>
+                                <td>Buscar por estado</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-gear"></i> Endpoints de Sistema</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/estadisticas</code></td>
+                                <td>Obtener estadísticas</td>
+                            </tr>
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/departamentos</code></td>
+                                <td>Listar departamentos</td>
+                            </tr>
+                            <tr>
+                                <th>GET</th>
+                                <td><code>/estados</code></td>
+                                <td>Listar estados</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="bi bi-terminal"></i> Ejemplos de Uso</h5>
+            </div>
+            <div class="card-body">
+                <h6>Ejemplo 1: Buscar RUC</h6>
+                <pre class="bg-light p-3 rounded"><code>GET /api/v1/buscar/10452159428
+
+Respuesta:
+{
+    "success": true,
+    "data": {
+        "ruc": "10452159428",
+        "nombre_razon_social": "GARCIA CHANCO CARLOS AUGUSTO",
+        "estado_contribuyente": "ACTIVO",
+        ...
+    }
+}</code></pre>
+                
+                <h6 class="mt-4">Ejemplo 2: Buscar por nombre</h6>
+                <pre class="bg-light p-3 rounded"><code>GET /api/v1/buscar/nombre/EMPRESA?limit=10
+
+Respuesta:
+{
+    "success": true,
+    "count": 10,
+    "data": [...]
+}</code></pre>
+            </div>
+        </div>
+        
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            <strong>Nota:</strong> La documentación completa de la API está disponible en 
+            <a href="/api/docs" class="alert-link" target="_blank">/api/docs</a> (Swagger UI)
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">
+                <i class="bi bi-house"></i> Ir al inicio
+            </a>
+            <a href="/api/docs" target="_blank" class="btn btn-success">
+                <i class="bi bi-code-square"></i> Ver Swagger UI
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

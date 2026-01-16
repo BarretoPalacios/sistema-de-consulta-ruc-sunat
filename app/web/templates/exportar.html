@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="mb-0"><i class="bi bi-download"></i> Exportar Datos</h3>
+            </div>
+            <div class="card-body">
+                <form action="/exportar/descargar" method="post">
+                    <div class="mb-4">
+                        <label for="ruc" class="form-label">
+                            <strong>RUC a Exportar</strong>
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="ruc" 
+                               name="ruc" 
+                               placeholder="Ingrese RUC (11 dígitos)"
+                               pattern="\d{11}"
+                               maxlength="11"
+                               required
+                               autofocus>
+                        <div class="form-text">
+                            Ingrese el RUC de 11 dígitos que desea exportar.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="formato" class="form-label">
+                            <strong>Formato de Exportación</strong>
+                        </label>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-check card h-100">
+                                    <input class="form-check-input" 
+                                           type="radio" 
+                                           name="formato" 
+                                           id="json" 
+                                           value="json" 
+                                           checked>
+                                    <label class="form-check-label card-body" for="json">
+                                        <i class="bi bi-filetype-json display-6 text-warning"></i>
+                                        <h5 class="card-title mt-2">JSON</h5>
+                                        <p class="card-text">Formato estructurado para APIs y programas</p>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-check card h-100">
+                                    <input class="form-check-input" 
+                                           type="radio" 
+                                           name="formato" 
+                                           id="csv" 
+                                           value="csv">
+                                    <label class="form-check-label card-body" for="csv">
+                                        <i class="bi bi-filetype-csv display-6 text-success"></i>
+                                        <h5 class="card-title mt-2">CSV</h5>
+                                        <p class="card-text">Formato tabular para hojas de cálculo</p>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-check card h-100">
+                                    <input class="form-check-input" 
+                                           type="radio" 
+                                           name="formato" 
+                                           id="texto" 
+                                           value="texto">
+                                    <label class="form-check-label card-body" for="texto">
+                                        <i class="bi bi-filetype-txt display-6 text-primary"></i>
+                                        <h5 class="card-title mt-2">Texto</h5>
+                                        <p class="card-text">Formato legible para humanos</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <strong>Nota:</strong> Al hacer clic en "Exportar", se descargará automáticamente el archivo.
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/" class="btn btn-secondary me-md-2">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-download"></i> Exportar
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="card mt-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-history"></i> Exportaciones Recientes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="exportaciones-recientes" class="text-center text-muted py-3">
+                            <i class="bi bi-clock-history display-6"></i>
+                            <p class="mt-2">No hay exportaciones recientes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Mostrar exportaciones recientes
+function mostrarExportacionesRecientes() {
+    const exportaciones = JSON.parse(localStorage.getItem('exportaciones_recientes') || '[]');
+    const container = document.getElementById('exportaciones-recientes');
+    
+    if (exportaciones.length === 0) {
+        container.innerHTML = `
+            <div class="text-center text-muted py-3">
+                <i class="bi bi-clock-history display-6"></i>
+                <p class="mt-2">No hay exportaciones recientes</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '<div class="list-group">';
+    exportaciones.forEach((exp, index) => {
+        html += `
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <div>
+                        <strong>${exp.ruc}</strong><br>
+                        <small class="text-muted">${new Date(exp.fecha).toLocaleString()}</small>
+                    </div>
+                    <div>
+                        <span class="badge ${exp.formato === 'json' ? 'bg-warning' : exp.formato === 'csv' ? 'bg-success' : 'bg-primary'}">
+                            ${exp.formato.toUpperCase()}
+                        </span>
+                        <button onclick="exportarDeNuevo('${exp.ruc}', '${exp.formato}')" 
+                                class="btn btn-sm btn-outline-primary ms-2">
+                            <i class="bi bi-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// Guardar exportación en historial
+document.querySelector('form').addEventListener('submit', function(e) {
+    const ruc = document.getElementById('ruc').value;
+    const formato = document.querySelector('input[name="formato"]:checked').value;
+    
+    let exportaciones = JSON.parse(localStorage.getItem('exportaciones_recientes') || '[]');
+    
+    // Agregar nueva exportación
+    exportaciones.unshift({
+        ruc: ruc,
+        formato: formato,
+        fecha: new Date().toISOString()
+    });
+    
+    // Mantener solo las últimas 5
+    exportaciones = exportaciones.slice(0, 5);
+    localStorage.setItem('exportaciones_recientes', JSON.stringify(exportaciones));
+});
+
+// Exportar desde historial
+function exportarDeNuevo(ruc, formato) {
+    // Crear un formulario dinámico
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = '/exportar/descargar';
+    
+    const rucInput = document.createElement('input');
+    rucInput.type = 'hidden';
+    rucInput.name = 'ruc';
+    rucInput.value = ruc;
+    
+    const formatoInput = document.createElement('input');
+    formatoInput.type = 'hidden';
+    formatoInput.name = 'formato';
+    formatoInput.value = formato;
+    
+    form.appendChild(rucInput);
+    form.appendChild(formatoInput);
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
+
+// Cargar historial al cargar la página
+document.addEventListener('DOMContentLoaded', mostrarExportacionesRecientes);
+</script>
+{% endblock %}

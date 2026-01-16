@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0"><i class="bi bi-person"></i> Buscar por Nombre</h3>
+            </div>
+            <div class="card-body">
+                <form action="/buscar-nombre/resultado" method="post">
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label">
+                            <strong>Nombre o Razón Social</strong>
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="nombre" 
+                               name="nombre" 
+                               placeholder="Ejemplo: EMPRESA S.A.C."
+                               minlength="3"
+                               required
+                               autofocus>
+                        <div class="form-text">
+                            Ingrese al menos 3 caracteres. Se buscarán coincidencias parciales.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="limit" class="form-label">
+                            <strong>Límite de resultados</strong>
+                        </label>
+                        <select class="form-select" id="limit" name="limit">
+                            <option value="10" selected>10 resultados</option>
+                            <option value="20">20 resultados</option>
+                            <option value="50">50 resultados</option>
+                            <option value="100">100 resultados</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/" class="btn btn-secondary me-md-2">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

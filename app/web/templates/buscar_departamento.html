@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-white">
+                <h3 class="mb-0"><i class="bi bi-geo-alt"></i> Buscar por Departamento</h3>
+            </div>
+            <div class="card-body">
+                <form action="/buscar-departamento/resultado" method="post">
+                    <div class="mb-4">
+                        <label for="departamento" class="form-label">
+                            <strong>Código de Departamento (2 dígitos)</strong>
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">DPTO</span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="departamento" 
+                                   name="departamento" 
+                                   placeholder="Ejemplo: 15 (Lima)"
+                                   pattern="\d{2}"
+                                   maxlength="2"
+                                   required
+                                   autofocus>
+                        </div>
+                        <div class="form-text">
+                            Ingrese el código de 2 dígitos del departamento.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="limit" class="form-label">
+                            <strong>Límite de resultados</strong>
+                        </label>
+                        <select class="form-select" id="limit" name="limit">
+                            <option value="20" selected>20 resultados</option>
+                            <option value="50">50 resultados</option>
+                            <option value="100">100 resultados</option>
+                            <option value="200">200 resultados</option>
+                        </select>
+                    </div>
+                    
+                    {% if departamentos %}
+                    <div class="mb-4">
+                        <h5><i class="bi bi-list-ul"></i> Departamentos disponibles:</h5>
+                        <div class="row mt-2">
+                            {% for depto in departamentos %}
+                            <div class="col-md-3 mb-2">
+                                <button type="button" 
+                                        onclick="seleccionarDepartamento('{{ depto.codigo }}')" 
+                                        class="btn btn-outline-warning w-100">
+                                    {{ depto.codigo }} ({{ depto.cantidad }})
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/" class="btn btn-secondary me-md-2">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="alert alert-light mt-4">
+                    <h5><i class="bi bi-lightbulb"></i> Códigos comunes:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="mb-0">
+                                <li><strong>01:</strong> Amazonas</li>
+                                <li><strong>02:</strong> Áncash</li>
+                                <li><strong>03:</strong> Apurímac</li>
+                                <li><strong>04:</strong> Arequipa</li>
+                                <li><strong>05:</strong> Ayacucho</li>
+                                <li><strong>06:</strong> Cajamarca</li>
+                                <li><strong>07:</strong> Callao</li>
+                                <li><strong>08:</strong> Cusco</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="mb-0">
+                                <li><strong>15:</strong> Lima</li>
+                                <li><strong>16:</strong> Loreto</li>
+                                <li><strong>17:</strong> Madre de Dios</li>
+                                <li><strong>18:</strong> Moquegua</li>
+                                <li><strong>19:</strong> Pasco</li>
+                                <li><strong>20:</strong> Piura</li>
+                                <li><strong>21:</strong> Puno</li>
+                                <li><strong>22:</strong> San Martín</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function seleccionarDepartamento(codigo) {
+    document.getElementById('departamento').value = codigo;
+}
+</script>
+{% endblock %}

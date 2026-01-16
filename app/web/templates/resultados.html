@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header {% if success %}bg-success{% else %}bg-danger{% endif %} text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-{% if success %}check-circle{% else %}x-circle{% endif %}"></i>
+                    {% if success %}Resultado Encontrado{% else %}Error en Búsqueda{% endif %}
+                </h3>
+            </div>
+            
+            {% if success %}
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <i class="bi bi-check-lg"></i> 
+                    <strong>¡RUC encontrado!</strong> 
+                    Tiempo de respuesta: {{ result.response_time|round(3) }} segundos
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="bi bi-person-badge"></i> Información Básica</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th width="40%">RUC:</th>
+                                        <td><strong class="text-primary">{{ result.data.ruc }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nombre/Razón Social:</th>
+                                        <td>{{ result.data.nombre_razon_social or 'No disponible' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Estado:</th>
+                                        <td>
+                                            <span class="badge {% if result.data.estado_contribuyente == 'ACTIVO' %}bg-success{% elif result.data.estado_contribuyente == 'HABIDO' %}bg-primary{% else %}bg-warning{% endif %}">
+                                                {{ result.data.estado_contribuyente or 'No disponible' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Condición Domicilio:</th>
+                                        <td>{{ result.data.condicion_domicilio or 'No disponible' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ubigeo:</th>
+                                        <td>{{ result.data.ubigeo or 'No disponible' }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Dirección</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Dirección Completa:</strong></p>
+                                <p class="alert alert-light">
+                                    <i class="bi bi-geo"></i> 
+                                    {{ result.data.direccion_completa or 'No disponible' }}
+                                </p>
+                                
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th>Tipo Vía:</th>
+                                        <td>{{ result.data.tipo_via or 'N/A' }}</td>
+                                        <th>Nombre Vía:</th>
+                                        <td>{{ result.data.nombre_via or 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Número:</th>
+                                        <td>{{ result.data.numero or 'N/A' }}</td>
+                                        <th>Interior:</th>
+                                        <td>{{ result.data.interior or 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lote:</th>
+                                        <td>{{ result.data.lote or 'N/A' }}</td>
+                                        <th>Departamento:</th>
+                                        <td>{{ result.data.departamento or 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Manzana:</th>
+                                        <td>{{ result.data.manzana or 'N/A' }}</td>
+                                        <th>Kilómetro:</th>
+                                        <td>{{ result.data.kilometro or 'N/A' }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="bi bi-tools"></i> Acciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="/buscar" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Nueva Búsqueda
+                            </a>
+                            
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success dropdown-toggle" 
+                                        data-bs-toggle="dropdown">
+                                    <i class="bi bi-download"></i> Exportar
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="/exportar/descargar?ruc={{ result.data.ruc }}&formato=json">
+                                            <i class="bi bi-filetype-json"></i> JSON
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/exportar/descargar?ruc={{ result.data.ruc }}&formato=csv">
+                                            <i class="bi bi-filetype-csv"></i> CSV
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/exportar/descargar?ruc={{ result.data.ruc }}&formato=texto">
+                                            <i class="bi bi-filetype-txt"></i> Texto
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <button onclick="copiarResultado()" class="btn btn-info">
+                                <i class="bi bi-clipboard"></i> Copiar Datos
+                            </button>
+                            
+                            <button onclick="imprimirResultado()" class="btn btn-warning">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </button>
+                            
+                            <a href="/api/v1/buscar/{{ result.data.ruc }}" 
+                               target="_blank" class="btn btn-dark">
+                                <i class="bi bi-code-slash"></i> Ver JSON API
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>¡RUC no encontrado!</strong> {{ error }}
+                </div>
+                
+                <div class="text-center">
+                    <i class="bi bi-search display-1 text-muted"></i>
+                    <h4 class="mt-3">RUC "{{ ruc }}" no se encuentra en el padrón</h4>
+                    <p class="text-muted">Verifique que el RUC tenga 11 dígitos y esté correctamente escrito.</p>
+                    
+                    <div class="mt-4">
+                        <a href="/buscar" class="btn btn-primary">
+                            <i class="bi bi-arrow-left"></i> Intentar de nuevo
+                        </a>
+                        <a href="/" class="btn btn-secondary">
+                            <i class="bi bi-house"></i> Ir al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function copiarResultado() {
+    const resultado = {{ result.data|tojson }};
+    const texto = `RUC: ${resultado.ruc}
+Nombre: ${resultado.nombre_razon_social}
+Estado: ${resultado.estado_contribuyente}
+Dirección: ${resultado.direccion_completa}
+Ubigeo: ${resultado.ubigeo}
+Fecha Consulta: ${new Date().toLocaleString()}`;
+    
+    navigator.clipboard.writeText(texto).then(() => {
+        alert('Datos copiados al portapapeles');
+    });
+}
+
+function imprimirResultado() {
+    window.print();
+}
+
+// Guardar en historial si fue exitoso
+{% if success %}
+window.addEventListener('load', function() {
+    let historial = JSON.parse(localStorage.getItem('ruc_historial') || '[]');
+    const resultado = {{ result.data|tojson }};
+    
+    // Agregar al historial si no existe
+    const existe = historial.some(item => item.ruc === resultado.ruc);
+    if (!existe) {
+        historial.unshift({
+            ruc: resultado.ruc,
+            nombre: resultado.nombre_razon_social,
+            fecha: new Date().toISOString(),
+            data: resultado
+        });
+        
+        // Mantener solo los últimos 10
+        historial = historial.slice(0, 10);
+        localStorage.setItem('ruc_historial', JSON.stringify(historial));
+    }
+});
+{% endif %}
+</script>
+{% endblock %}
