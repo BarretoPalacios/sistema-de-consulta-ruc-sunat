@@ -22,6 +22,11 @@ temp_*/
 padron_reducido_ruc.zip
 padron.txt
 
+# Cache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
 # IDE
 .vscode/
 .idea/

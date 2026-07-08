@@ -26,8 +26,4 @@ node_modules/
 .pytest_cache/
 .mypy_cache/
 
-# Docker
-Dockerfile
-docker-compose.yml
-
 padron.txt

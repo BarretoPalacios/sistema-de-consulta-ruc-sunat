@@ -14,12 +14,12 @@ API REST + Web UI para consultar el padrón reducido de contribuyentes de SUNAT 
 | Cache | TTLCache (cachetools) |
 | Auth | Bearer Token estático |
 | Rate limiting | slowapi |
-| Actualización | CLI independiente + CRON |
+| Actualización | Docker + host CRON |
 
 ## Estructura
 
 ```
-ruc-sunat/
+sistema-de-consulta-ruc-sunat/
 ├── apps/
 │   ├── api/                    # FastAPI — consultas, auth, docs, frontend
 │   │   ├── main.py             # Entrypoint: uvicorn apps.api.main:app
@@ -55,8 +55,8 @@ ruc-sunat/
 
 ```bash
 # 1. Clonar
-git clone https://github.com/tu-usuario/ruc-sunat.git
-cd ruc-sunat
+git clone https://github.com/BarretoPalacios/sistema-de-consulta-ruc-sunat.git
+cd sistema-de-consulta-ruc-sunat
 
 # 2. Entorno virtual
 python -m venv venv
@@ -86,8 +86,8 @@ python apps/api/main.py
 
 ```bash
 # 1. Clonar en el servidor
-git clone https://github.com/tu-usuario/ruc-sunat.git /opt/ruc-sunat
-cd /opt/ruc-sunat
+git clone https://github.com/BarretoPalacios/sistema-de-consulta-ruc-sunat.git /opt/sistema-de-consulta-ruc-sunat
+cd /opt/sistema-de-consulta-ruc-sunat
 
 # 2. Configurar
 cp .env.example .env
@@ -101,7 +101,7 @@ docker compose run --rm updater
 
 # 5. Programar actualización diaria a las 3 AM
 crontab -e
-# Agregar: 0 3 * * * cd /opt/ruc-sunat && docker compose run --rm updater
+# Agregar: 0 3 * * * cd /opt/sistema-de-consulta-ruc-sunat && docker compose run --rm updater
 
 # 6. Ver logs
 docker compose logs -f
@@ -233,6 +233,11 @@ pytest -v
 | Variable | Default | Descripción |
 |---|---|---|
 | `API_TOKEN` | — | Token de autenticación Bearer |
+| `API_TITLE` | `Sistema de Búsqueda de RUC` | Título de la API |
+| `API_VERSION` | `1.0.0` | Versión de la API |
+| `API_DESCRIPTION` | `API para consulta del padrón SUNAT` | Descripción de la API |
+| `WEB_TITLE` | `Búsqueda RUC SUNAT` | Título de la web UI |
+| `WEB_DESCRIPTION` | `Sistema de consulta del padrón de contribuyentes` | Descripción de la web UI |
 | `DATABASE_URL` | `data/contribuyentes.db` | Ruta a la BD SQLite |
 | `CACHE_SIZE` | `10000` | Máximo de entradas en caché |
 | `CACHE_TTL` | `3600` | TTL de caché en segundos |

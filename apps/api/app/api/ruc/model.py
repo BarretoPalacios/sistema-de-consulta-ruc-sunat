@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 
 
 class ContribuyenteOut(BaseModel):
@@ -20,6 +20,7 @@ class ContribuyenteOut(BaseModel):
     manzana: Optional[str] = None
     kilometro: Optional[str] = None
 
+    @computed_field
     @property
     def direccion_completa(self) -> str:
         partes = []
