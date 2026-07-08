@@ -1,7 +1,7 @@
 import sqlite3
 
-from packages.logger.logger import get_logger
 from packages.constants.constants import INDEXES
+from packages.logger.logger import get_logger
 
 logger = get_logger("updater.index")
 

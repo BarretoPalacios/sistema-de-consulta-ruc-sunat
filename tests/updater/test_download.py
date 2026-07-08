@@ -1,11 +1,12 @@
 import os
-import zipfile
 import tempfile
-from unittest.mock import patch, Mock
+import zipfile
+from unittest.mock import Mock, patch
+
 import pytest
 
-from packages.utils.files import remove_if_exists
 from apps.updater.services.extract_service import extract_txt_from_zip
+from packages.utils.files import remove_if_exists
 
 
 def _create_test_zip(zip_path, txt_content="HEADER\n10452159428|JUAN PEREZ|ACTIVO|HABIDO|150101|AV|LOS OLIVOS|||||||||\n", txt_name="padron_reducido_ruc.txt"):

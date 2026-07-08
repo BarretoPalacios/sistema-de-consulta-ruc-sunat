@@ -1,16 +1,14 @@
 import os
 import time
-from datetime import datetime
-
-from packages.logger.logger import get_logger, setup_logging
-from packages.utils.files import check_disk_space, remove_if_exists, ensure_dir
-from packages.constants.constants import DB_FILENAME, DB_FILENAME_NEW, METADATA_FILE
 
 from apps.updater.services.download_service import check_remote, download_zip, save_metadata
 from apps.updater.services.extract_service import extract_txt_from_zip
-from apps.updater.services.load_service import load_to_db
 from apps.updater.services.index_service import create_indexes
+from apps.updater.services.load_service import load_to_db
 from apps.updater.services.publish_service import publish
+from packages.constants.constants import DB_FILENAME, DB_FILENAME_NEW
+from packages.logger.logger import get_logger
+from packages.utils.files import check_disk_space, ensure_dir, remove_if_exists
 
 logger = get_logger("updater")
 

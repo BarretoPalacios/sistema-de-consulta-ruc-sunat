@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -9,9 +9,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
+from apps.api.app.api.ruc.router import router as api_router
 from apps.api.app.core.config import api_settings
 from apps.api.app.core.limiter import limiter
-from apps.api.app.api.ruc.router import router as api_router
 from apps.api.app.web.routes import router as web_router
 
 app = FastAPI(

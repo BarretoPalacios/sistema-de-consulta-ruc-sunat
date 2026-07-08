@@ -1,10 +1,9 @@
 import os
 import zipfile
-from typing import Optional
 
+from packages.exceptions import ParseError
 from packages.logger.logger import get_logger
 from packages.utils.files import ensure_dir
-from packages.exceptions import ParseError
 
 logger = get_logger("updater.extract")
 

@@ -1,7 +1,7 @@
 import os
+import sqlite3
 import sys
 import tempfile
-import sqlite3
 
 import pytest
 from fastapi.testclient import TestClient

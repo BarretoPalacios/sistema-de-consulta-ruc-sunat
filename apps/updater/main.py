@@ -1,13 +1,13 @@
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import argparse
 
-from packages.logger.logger import setup_logging, get_logger
-from packages.config.settings import settings
 from apps.updater.services.update_service import run_update
+from packages.config.settings import settings
+from packages.logger.logger import get_logger, setup_logging
 
 
 def main():

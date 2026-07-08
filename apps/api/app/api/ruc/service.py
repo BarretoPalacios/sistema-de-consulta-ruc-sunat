@@ -1,13 +1,12 @@
-import time
 import re
-from typing import Optional
+import time
 from datetime import datetime
+
 from cachetools import TTLCache
 
-from packages.database.connection import get_connection
-from packages.config.settings import settings
-from apps.api.app.core.config import api_settings
 from apps.api.app.api.ruc.model import ContribuyenteOut
+from packages.config.settings import settings
+from packages.database.connection import get_connection
 
 
 class RUCService:

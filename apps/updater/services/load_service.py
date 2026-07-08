@@ -2,11 +2,11 @@ import sqlite3
 import time
 from typing import Tuple
 
-from packages.logger.logger import get_logger
-from packages.database.sqlite import optimize_for_bulk_insert, insert_batch
-from packages.constants.constants import CREATE_TABLE_SQL
-from packages.utils.encodings import detect_encoding
 from apps.updater.services.parse_service import parse_line
+from packages.constants.constants import CREATE_TABLE_SQL
+from packages.database.sqlite import insert_batch, optimize_for_bulk_insert
+from packages.logger.logger import get_logger
+from packages.utils.encodings import detect_encoding
 
 logger = get_logger("updater.load")
 

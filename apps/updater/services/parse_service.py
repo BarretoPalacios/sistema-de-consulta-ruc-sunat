@@ -1,7 +1,7 @@
-from typing import Optional, List
+from typing import List, Optional
 
-from packages.utils.encodings import clean_value
 from packages.logger.logger import get_logger
+from packages.utils.encodings import clean_value
 
 logger = get_logger("updater.parse")
 

@@ -1,11 +1,11 @@
 import os
 import sqlite3
 
-from packages.logger.logger import get_logger
-from packages.utils.files import safe_rename, remove_if_exists
+from packages.constants.constants import DB_FILENAME, DB_FILENAME_OLD
 from packages.database.sqlite import optimize_for_read
-from packages.constants.constants import DB_FILENAME, DB_FILENAME_NEW, DB_FILENAME_OLD
 from packages.exceptions import PublishError
+from packages.logger.logger import get_logger
+from packages.utils.files import remove_if_exists, safe_rename
 
 logger = get_logger("updater.publish")
 

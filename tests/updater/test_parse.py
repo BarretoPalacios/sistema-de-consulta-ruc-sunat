@@ -1,9 +1,7 @@
 import os
-import sqlite3
-import pytest
 
-from packages.utils.encodings import clean_value, detect_encoding
 from apps.updater.services.parse_service import parse_line
+from packages.utils.encodings import clean_value, detect_encoding
 
 
 class TestParseService:

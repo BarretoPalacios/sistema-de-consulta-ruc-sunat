@@ -1,5 +1,4 @@
 import hashlib
-import os
 
 
 def compute_etag(filepath: str) -> str:

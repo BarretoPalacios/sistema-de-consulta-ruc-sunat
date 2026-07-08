@@ -1,5 +1,5 @@
-import pytest
 from fastapi.testclient import TestClient
+
 from apps.api.app.core.config import api_settings
 
 

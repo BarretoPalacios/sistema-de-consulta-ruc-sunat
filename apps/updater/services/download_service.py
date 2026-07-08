@@ -1,11 +1,11 @@
-import os
 import json
-import requests
-from typing import Optional
+import os
 
+import requests
+
+from packages.exceptions import DownloadError
 from packages.logger.logger import get_logger
 from packages.utils.files import ensure_dir
-from packages.exceptions import DownloadError
 
 logger = get_logger("updater.download")
 
