@@ -11,7 +11,6 @@ from apps.api.app.api.ruc.service import RUCService
 from packages.config.settings import settings
 
 templates = Jinja2Templates(directory="apps/api/app/web/templates")
-templates.env.cache = None
 
 router = APIRouter()
 ruc_service = RUCService()
@@ -30,8 +29,7 @@ def _get_updater_status() -> dict:
 
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "index.html", {
         "title": "Sistema de Búsqueda de RUC",
         "page": "home",
     })
@@ -39,8 +37,7 @@ async def home(request: Request):
 
 @router.post("/buscar", response_class=HTMLResponse)
 async def buscar_ruc(request: Request, ruc: str = Form(...)):
-    return templates.TemplateResponse("detalle.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "detalle.html", {
         "title": "Resultado de Búsqueda",
         "page": "detalle",
         "result": ruc_service.buscar_por_ruc(ruc, source="web"),
@@ -50,8 +47,7 @@ async def buscar_ruc(request: Request, ruc: str = Form(...)):
 
 @router.get("/detalle/{ruc}", response_class=HTMLResponse)
 async def detalle_ruc(request: Request, ruc: str):
-    return templates.TemplateResponse("detalle.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "detalle.html", {
         "title": "Resultado de Búsqueda",
         "page": "detalle",
         "result": ruc_service.buscar_por_ruc(ruc, source="web"),
@@ -61,8 +57,7 @@ async def detalle_ruc(request: Request, ruc: str):
 
 @router.get("/docs", response_class=HTMLResponse)
 async def docs_page(request: Request):
-    return templates.TemplateResponse("docs.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "docs.html", {
         "title": "Documentación de la API",
         "page": "docs",
     })
@@ -72,8 +67,7 @@ async def docs_page(request: Request):
 async def estadisticas_page(request: Request):
     stats = ruc_service.obtener_estadisticas()
     updater_info = _get_updater_status()
-    return templates.TemplateResponse("estadisticas.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "estadisticas.html", {
         "title": "Estadísticas del Sistema",
         "page": "estadisticas",
         "stats": stats,
