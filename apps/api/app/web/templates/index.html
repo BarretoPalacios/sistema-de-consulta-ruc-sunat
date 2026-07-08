@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="px-margin-mobile md:px-margin-desktop pt-8 md:pt-16 pb-12 max-w-container-max mx-auto w-full">
+  <div class="max-w-3xl mx-auto text-center mb-12">
+    <h2 class="font-display text-display text-primary mb-4">Búsqueda Centralizada de RUC</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Acceso en tiempo real al padrón oficial de contribuyentes peruanos. Rápido, confiable y pensado para desarrolladores.</p>
+  </div>
+
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white border border-outline-variant p-6 md:p-8 rounded-xl shadow-sm relative overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 0.5px, transparent 0.5px); background-size: 16px 16px;"></div>
+      <div class="relative z-10">
+        <form action="/buscar" method="post">
+          <div class="flex items-center border border-outline-variant rounded-lg bg-surface-container-lowest transition-all mb-6">
+            <span class="material-symbols-outlined ml-4 text-on-surface-variant">search</span>
+            <input type="text" name="ruc" placeholder="Ingrese número de RUC..." pattern="\d{11}" maxlength="11" required class="w-full bg-transparent border-none focus:ring-0 px-4 py-5 font-body-lg text-body-lg text-on-surface placeholder:text-outline">
+            <button type="submit" class="mr-3 bg-primary text-on-primary px-6 py-2 rounded font-label-sm text-label-sm font-bold hover:opacity-90 active:scale-95 transition-all">BUSCAR</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-headline-md text-headline-md text-primary">Acerca del proyecto</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="border border-outline-variant p-5 rounded-lg bg-white">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-primary">database</span>
+          <h4 class="font-headline-md text-headline-md text-primary">18M+ Registros</h4>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant">Padrón completo de contribuyentes SUNAT con más de 18 millones de registros consultables en milisegundos.</p>
+      </div>
+      <div class="border border-outline-variant p-5 rounded-lg bg-white">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-primary">bolt</span>
+          <h4 class="font-headline-md text-headline-md text-primary">API en Tiempo Real</h4>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant">API RESTful con autenticación Bearer. Usa tu API token e intégralo en minutos.</p>
+      </div>
+      <div class="border border-outline-variant p-5 rounded-lg bg-white">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-primary">download</span>
+          <h4 class="font-headline-md text-headline-md text-primary">Formatos de Exportación</h4>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant">Descarga resultados en JSON, CSV o TXT. Copia datos en bruto con un clic.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

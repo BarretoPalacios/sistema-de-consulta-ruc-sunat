@@ -1,0 +1,5 @@
+-r api.txt
+pytest>=8.3
+httpx>=0.27
+ruff>=0.6
+mypy>=1.10

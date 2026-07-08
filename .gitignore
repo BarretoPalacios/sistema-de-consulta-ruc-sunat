@@ -1,10 +1,27 @@
-venv
-padron.txt
-__pycache__
-contribuyentes.db
-padron.txt
-*pyc
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Database
 *.db
 *.sqlite
 *.sqlite3
+data/contribuyentes*.db
+data/metadata.json
+
+# Environment
 .env
+
+# Logs
+logs/*.log
+logs/*.log.*
+
+# Temp
+temp_*/
+padron_reducido_ruc.zip
+padron.txt
+
+# IDE
+.vscode/
+.idea/

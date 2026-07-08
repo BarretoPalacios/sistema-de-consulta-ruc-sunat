@@ -1,0 +1,3 @@
+requests>=2.32
+pydantic-settings>=2.12
+python-dotenv>=1.0

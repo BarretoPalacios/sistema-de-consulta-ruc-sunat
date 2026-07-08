@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="px-margin-mobile md:px-margin-desktop pt-8 md:pt-16 pb-12 max-w-container-max mx-auto w-full">
+  <div class="max-w-3xl mx-auto text-center mb-12">
+    <h2 class="font-display text-display text-primary mb-4">Estadísticas del Sistema</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Métricas en tiempo real y datos de uso del motor de búsqueda RUC.</p>
+  </div>
+
+  <div class="max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      {% if stats and stats.success %}
+      <div class="border border-outline-variant p-6 rounded-lg bg-white">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary">query_stats</span>
+          <h3 class="font-headline-md text-headline-md text-primary">Consultas</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Total</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.estadisticas.total_consultas }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Exitosas</span>
+            <span class="font-body-lg text-body-lg font-bold text-primary">{{ stats.data.estadisticas.consultas_exitosas }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Fallidas</span>
+            <span class="font-body-lg text-body-lg font-bold text-error">{{ stats.data.estadisticas.consultas_fallidas }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Tasa de Éxito</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.estadisticas.tasa_exito }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Tiempo Promedio</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.estadisticas.tiempo_promedio_ms }} ms</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-outline-variant p-6 rounded-lg bg-white">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary">database</span>
+          <h3 class="font-headline-md text-headline-md text-primary">Base de Datos</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Total Registros</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.base_datos.total_registros }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Tamaño de Caché</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.cache.size }} / {{ stats.data.cache.max_size }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Llamadas API</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.estadisticas.consultas_api }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Llamadas Web</span>
+            <span class="font-body-lg text-body-lg font-bold">{{ stats.data.estadisticas.consultas_web }}</span>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-span-2 text-center py-16">
+        <span class="material-symbols-outlined text-[48px] text-on-surface-variant mb-4">error_outline</span>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">No se pudieron cargar las estadísticas. Es posible que la base de datos no esté disponible.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-8">
+      <div class="border border-outline-variant p-6 rounded-lg bg-white">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary">update</span>
+          <h3 class="font-headline-md text-headline-md text-primary">Estado del Padrón</h3>
+        </div>
+
+        {% if updater and updater.records %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="font-body-md text-body-md text-on-surface-variant">Registros</span>
+              <span class="font-body-lg font-bold">{{ "{:,}".format(updater.records) }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-body-md text-body-md text-on-surface-variant">Última Actualización</span>
+              <span class="font-body-md font-medium">{{ updater.last_modified or 'N/A' }}</span>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="font-body-md text-body-md text-on-surface-variant">ETag</span>
+              <span class="font-body-md font-mono text-xs truncate max-w-[180px] block">{{ updater.etag[:30] ~ '...' if updater.etag else 'N/A' }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-body-md text-body-md text-on-surface-variant">Tamaño</span>
+              <span class="font-body-lg font-bold">{{ (updater.content_length | int / 1024 / 1024) | round(1) }} MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-outline-variant">
+          <p class="font-body-md text-body-md text-on-surface-variant text-xs">
+            Los datos se actualizan automáticamente cada 24h vía CRON + Docker
+          </p>
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+          <span class="material-symbols-outlined text-[36px] text-on-surface-variant mb-2">info</span>
+          <p class="font-body-md text-body-md text-on-surface-variant">El padrón aún no ha sido descargado. Ejecute <code style="font-family:'Geist Mono',monospace;">docker compose run --rm updater</code> o <code style="font-family:'Geist Mono',monospace;">python apps/updater/main.py --run</code>.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

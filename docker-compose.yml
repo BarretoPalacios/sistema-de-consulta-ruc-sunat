@@ -1,0 +1,26 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  updater:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.updater
+    profiles:
+      - manual
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    restart: "no"

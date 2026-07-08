@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="px-margin-mobile md:px-margin-desktop py-4 md:py-8 space-y-4 md:space-y-gutter max-w-container-max mx-auto w-full">
+  {% if result.success %}
+  {% set d = result.data %}
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="bg-primary text-on-primary px-2 py-0.5 text-label-sm font-label-sm rounded uppercase">RUC: {{ d.ruc }}</span>
+        {% set estado = d.estado_contribuyente or '' %}
+        <span class="flex items-center gap-1 {% if estado == 'ACTIVO' %}text-emerald-700 bg-emerald-50 border border-emerald-200{% else %}text-amber-700 bg-amber-50 border border-amber-200{% endif %} px-2 py-0.5 rounded text-label-sm font-label-sm uppercase">
+          <span class="material-symbols-outlined text-[12px]">check_circle</span>
+          {{ estado }}
+        </span>
+        {% if d.condicion_domicilio %}
+        <span class="text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded text-label-sm font-label-sm uppercase">{{ d.condicion_domicilio }}</span>
+        {% endif %}
+      </div>
+      <h1 class="font-display text-display text-primary leading-tight break-words">{{ d.nombre_razon_social or 'No disponible' }}</h1>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <form action="/exportar/descargar" method="post" style="display:inline">
+        <input type="hidden" name="ruc" value="{{ d.ruc }}">
+        <input type="hidden" name="formato" value="json">
+        <button class="px-4 py-2 bg-surface border border-outline-variant text-primary font-body-md text-body-md rounded hover:bg-surface-container-low transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">download</span> JSON
+        </button>
+      </form>
+      <form action="/exportar/descargar" method="post" style="display:inline">
+        <input type="hidden" name="ruc" value="{{ d.ruc }}">
+        <input type="hidden" name="formato" value="csv">
+        <button class="px-4 py-2 bg-surface border border-outline-variant text-primary font-body-md text-body-md rounded hover:bg-surface-container-low transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">download</span> CSV
+        </button>
+      </form>
+      <form action="/exportar/descargar" method="post" style="display:inline">
+        <input type="hidden" name="ruc" value="{{ d.ruc }}">
+        <input type="hidden" name="formato" value="texto">
+        <button class="px-4 py-2 bg-surface border border-outline-variant text-primary font-body-md text-body-md rounded hover:bg-surface-container-low transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">download</span> TXT
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mt-6">
+    <div class="md:col-span-8 space-y-gutter">
+      <div class="bg-surface border border-outline-variant p-6 rounded-lg">
+        <h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary">info</span> Información General
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
+          <div class="space-y-1">
+            <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">RUC</span>
+            <p class="font-body-lg text-body-lg text-primary">{{ d.ruc }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Razón Social</span>
+            <p class="font-body-lg text-body-lg text-primary">{{ d.nombre_razon_social or 'N/A' }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Estado</span>
+            <p class="font-body-lg text-body-lg text-primary">{{ d.estado_contribuyente or 'N/A' }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Condición</span>
+            <p class="font-body-lg text-body-lg text-primary">{{ d.condicion_domicilio or 'N/A' }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Ubigeo</span>
+            <p class="font-body-lg text-body-lg text-primary">{{ d.ubigeo or 'N/A' }}</p>
+          </div>
+          <div class="space-y-1 sm:col-span-2">
+            <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Dirección Fiscal</span>
+            <p class="font-body-lg text-body-lg text-primary">{{ d.direccion_completa or 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:col-span-4 space-y-gutter">
+      <div class="bg-surface border border-outline-variant p-6 rounded-lg space-y-6">
+        <div class="space-y-4">
+          <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest border-b border-outline-variant pb-2">Dirección</h3>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Tipo Vía</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.tipo_via or 'N/A' }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Nombre Vía</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.nombre_via or 'N/A' }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Número</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.numero or 'N/A' }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Interior</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.interior or 'N/A' }}</span>
+          </div>
+          {% if d.lote %}
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Lote</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.lote }}</span>
+          </div>
+          {% endif %}
+          {% if d.departamento %}
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Departamento</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.departamento }}</span>
+          </div>
+          {% endif %}
+          {% if d.kilometro %}
+          <div class="flex justify-between items-center">
+            <span class="font-body-md text-body-md text-on-surface-variant">Kilómetro</span>
+            <span class="font-body-md text-body-md text-primary">{{ d.kilometro }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="bg-surface border border-outline-variant rounded-lg overflow-hidden code-container">
+        <div class="bg-surface-container-low px-4 py-2 flex justify-between items-center border-b border-outline-variant">
+          <span class="text-[11px] font-mono font-bold uppercase text-on-surface-variant">Raw JSON API Response</span>
+          <button onclick="copiarJSON()" class="copy-button p-1 hover:bg-surface-container-high rounded transition-opacity">
+            <span class="material-symbols-outlined text-[16px]">content_copy</span>
+          </button>
+        </div>
+        <pre class="p-4 font-code-md text-code-md text-on-surface-variant bg-[#FAFAFA] overflow-x-auto max-h-64"><code id="json-data">{{ d | tojson(indent=2) }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <a href="/" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-body-md text-body-md rounded hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-[18px]">arrow_back</span> Nueva Búsqueda
+    </a>
+  </div>
+
+  <script>
+  function copiarJSON() {
+    const json = document.getElementById('json-data').textContent;
+    navigator.clipboard.writeText(json).then(() => {
+      const btn = event.target.closest('button');
+      const icon = btn.querySelector('span');
+      icon.textContent = 'check';
+      setTimeout(() => { icon.textContent = 'content_copy'; }, 2000);
+    });
+  }
+  </script>
+
+  {% else %}
+  <div class="max-w-lg mx-auto text-center py-12 md:py-24 space-y-4">
+    <span class="material-symbols-outlined text-6xl text-on-surface-variant">search_off</span>
+    <h2 class="font-headline-lg text-headline-lg text-primary">RUC no encontrado</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">El RUC "{{ ruc }}" no se encuentra en el padrón. Verifica que tenga 11 dígitos.</p>
+    <a href="/" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-body-md text-body-md rounded hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-[18px]">arrow_back</span> Intentar de nuevo
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

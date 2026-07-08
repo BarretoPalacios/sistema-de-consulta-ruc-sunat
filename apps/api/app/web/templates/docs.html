@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex flex-1 overflow-hidden">
+  <div class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12">
+    <div class="max-w-3xl mx-auto">
+      <section class="mb-16" id="introduction">
+        <div class="inline-block px-2 py-1 bg-surface-container-low border border-outline-variant text-label-sm font-label-sm uppercase tracking-wider mb-4">API Version 1.0.0</div>
+        <h2 class="font-display text-display mb-6">Introducción</h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+          Bienvenido a la documentación de RUC API FREE. Esta API proporciona acceso en tiempo real al padrón de contribuyentes SUNAT de Perú. Todos los endpoints requieren autenticación Bearer usando tu <code class="bg-surface-container px-1 py-0.5 rounded" style="font-family:'Geist Mono',monospace">API_TOKEN</code> del archivo <code class="bg-surface-container px-1 py-0.5 rounded" style="font-family:'Geist Mono',monospace">.env</code>.
+        </p>
+      </section>
+
+      <section class="mb-16" id="authentication">
+        <h2 class="font-headline-lg text-headline-lg mb-4 border-b border-outline-variant pb-2">Autenticación</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-6">
+          Todas las solicitudes a la API requieren un encabezado <code class="bg-surface-container px-1 py-0.5 rounded" style="font-family:'Geist Mono',monospace">Authorization</code> con tu <code class="bg-surface-container px-1 py-0.5 rounded" style="font-family:'Geist Mono',monospace">API_TOKEN</code> definido en el archivo <code class="bg-surface-container px-1 py-0.5 rounded" style="font-family:'Geist Mono',monospace">.env</code>.
+        </p>
+        <div class="p-4 md:p-6 bg-surface-container-lowest border border-outline-variant rounded-lg mb-6">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">key</span>
+            <span class="font-label-sm text-label-sm font-bold uppercase tracking-wider">Encabezado de Ejemplo</span>
+          </div>
+          <div class="code-container relative group">
+            <pre class="bg-surface-container-low p-4 rounded" style="font-family:'Geist Mono',monospace;font-size:14px;color:#1a1c1c;overflow-x:auto;">Authorization: Bearer &lt;your-api-token&gt;</pre>
+            <button class="copy-button absolute top-2 right-2 p-2 bg-surface border border-outline-variant rounded hover:bg-surface-container-high transition-opacity" onclick="copiarTexto(this,'Authorization: Bearer <your-api-token>')">
+              <span class="material-symbols-outlined text-[18px]">content_copy</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-16" id="ruc-query">
+        <h2 class="font-headline-lg text-headline-lg mb-4 border-b border-outline-variant pb-2">Endpoint de Consulta</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-4">Obtén información detallada de un contribuyente usando un número RUC válido de 11 dígitos.</p>
+        <div class="flex items-center gap-2 mb-6">
+          <span class="px-2 py-0.5 bg-primary text-on-primary text-label-sm font-label-sm rounded uppercase">GET</span>
+          <code style="font-family:'Geist Mono',monospace;font-size:14px;">/api/ruc/{ruc}</code>
+        </div>
+        <div class="space-y-8">
+          <div>
+            <h3 class="font-label-sm text-label-sm font-bold uppercase mb-3 text-on-surface-variant">Ejemplo de Solicitud (cURL)</h3>
+            <div class="code-container relative group">
+              <pre class="bg-surface-container-low p-3 md:p-6 rounded text-[12px] md:text-[14px]" style="font-family:'Geist Mono',monospace;color:#1a1c1c;overflow-x:auto;">curl -X GET "http://localhost:8000/api/ruc/10452159428" \
+  -H "Authorization: Bearer YOUR_API_TOKEN"</pre>
+              <button class="copy-button absolute top-4 right-4 p-2 bg-surface border border-outline-variant rounded hover:bg-surface-container-high transition-opacity" onclick="copiarTexto(this,'curl -X GET \"http://localhost:8000/api/ruc/10452159428\" -H \"Authorization: Bearer YOUR_API_TOKEN\"')">
+                <span class="material-symbols-outlined text-[18px]">content_copy</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-label-sm text-label-sm font-bold uppercase mb-3 text-on-surface-variant">Respuesta Exitosa (200)</h3>
+            <div class="code-container relative group">
+              <pre class="bg-surface-container-low p-3 md:p-6 rounded text-[12px] md:text-[14px]" style="font-family:'Geist Mono',monospace;color:#1a1c1c;overflow-x:auto;">{
+  "success": true,
+  "data": {
+    "ruc": "10452159428",
+    "nombre_razon_social": "JUAN PEREZ",
+    "estado_contribuyente": "ACTIVO",
+    "condicion_domicilio": "HABIDO",
+    "ubigeo": "150101",
+    "direccion_completa": "AV. LOS OLIVOS 123",
+    "direccion_simple": "AV. LOS OLIVOS 123"
+  },
+  "timestamp": "2026-07-06T12:00:00",
+  "response_time": 0.015
+}</pre>
+              <button class="copy-button absolute top-4 right-4 p-2 bg-surface border border-outline-variant rounded hover:bg-surface-container-high transition-opacity" onclick="copiarTexto(this,document.currentScript.previousElementSibling.textContent)">
+                <span class="material-symbols-outlined text-[18px]">content_copy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-16" id="more-endpoints">
+        <h2 class="font-headline-lg text-headline-lg mb-4 border-b border-outline-variant pb-2">Endpoints Adicionales</h2>
+        <div class="space-y-4">
+          <div class="border border-outline-variant rounded-lg p-4">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 bg-primary text-on-primary text-label-sm font-label-sm rounded uppercase">GET</span>
+              <code class="text-[13px] md:text-[14px] break-all" style="font-family:'Geist Mono',monospace;">/api/stats</code>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface-variant">Obtén estadísticas de uso del sistema.</p>
+            </div>
+            <div class="border border-outline-variant rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2 py-0.5 bg-secondary text-on-primary text-label-sm font-label-sm rounded uppercase">GET</span>
+                <code class="text-[13px] md:text-[14px] break-all" style="font-family:'Geist Mono',monospace;">/api/status</code>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface-variant">Estado del sistema y la base de datos.</p>
+            </div>
+            <div class="border border-outline-variant rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2 py-0.5 bg-primary text-on-primary text-label-sm font-label-sm rounded uppercase">POST</span>
+                <code class="text-[13px] md:text-[14px] break-all" style="font-family:'Geist Mono',monospace;">/api/export</code>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">Exporta datos de un RUC en formato JSON, CSV o TXT.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-16" id="error-codes">
+        <h2 class="font-headline-lg text-headline-lg mb-6 border-b border-outline-variant pb-2">Códigos de Error</h2>
+        <div class="border border-outline-variant rounded overflow-hidden">
+          <table class="w-full text-left font-body-md text-body-md">
+            <thead class="bg-surface-container-low border-b border-outline-variant">
+              <tr>
+                <th class="px-6 py-3 font-semibold">Código</th>
+                <th class="px-6 py-3 font-semibold">Descripción</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant">
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-6 py-4" style="font-family:'Geist Mono',monospace;">401</td>
+                <td class="px-6 py-4 text-on-surface-variant">Token Bearer inválido o ausente.</td>
+              </tr>
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-6 py-4" style="font-family:'Geist Mono',monospace;">404</td>
+                <td class="px-6 py-4 text-on-surface-variant">Número de RUC no encontrado en el padrón.</td>
+              </tr>
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-6 py-4" style="font-family:'Geist Mono',monospace;">400</td>
+                <td class="px-6 py-4 text-on-surface-variant">Entrada inválida, RUC mal formado o formato incorrecto.</td>
+              </tr>
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-6 py-4" style="font-family:'Geist Mono',monospace;">500</td>
+                <td class="px-6 py-4 text-on-surface-variant">Error interno del servidor.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <aside class="w-64 hidden xl:block border-l border-outline-variant bg-surface py-12 px-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto flex-shrink-0">
+    <h4 class="font-label-sm text-label-sm font-bold uppercase tracking-wider mb-6 text-on-surface">En esta página</h4>
+    <ul class="space-y-4 font-body-md text-body-md">
+      <li><a class="text-primary font-medium border-l-2 border-primary pl-3" href="#introduction">Introducción</a></li>
+      <li><a class="text-on-surface-variant hover:text-primary transition-colors pl-3.5" href="#authentication">Autenticación</a></li>
+      <li><a class="text-on-surface-variant hover:text-primary transition-colors pl-3.5" href="#ruc-query">Endpoint de Consulta</a></li>
+      <li><a class="text-on-surface-variant hover:text-primary transition-colors pl-3.5" href="#more-endpoints">Endpoints Adicionales</a></li>
+      <li><a class="text-on-surface-variant hover:text-primary transition-colors pl-3.5" href="#error-codes">Códigos de Error</a></li>
+    </ul>
+  </aside>
+</div>
+
+<script>
+function copiarTexto(btn, texto) {
+  navigator.clipboard.writeText(texto).then(() => {
+    const icon = btn.querySelector('span');
+    icon.textContent = 'check';
+    btn.classList.add('bg-primary', 'text-on-primary');
+    setTimeout(() => {
+      icon.textContent = 'content_copy';
+      btn.classList.remove('bg-primary', 'text-on-primary');
+    }, 2000);
+  });
+}
+</script>
+{% endblock %}

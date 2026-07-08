@@ -1,0 +1,319 @@
+<!doctype html>
+<html class="light" lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ title }} — RUC API FREE</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "on-secondary-fixed-variant": "#464747",
+                            "on-primary": "#ffffff",
+                            "primary-fixed": "#e2e2e2",
+                            "surface-bright": "#f9f9f9",
+                            "on-tertiary-fixed-variant": "#474747",
+                            "tertiary-fixed-dim": "#c6c6c6",
+                            "on-tertiary-container": "#848484",
+                            "on-surface-variant": "#4c4546",
+                            "surface-variant": "#e2e2e2",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-container": "#1b1b1b",
+                            "on-tertiary-fixed": "#1b1b1b",
+                            "inverse-on-surface": "#f0f1f1",
+                            "surface-container-high": "#e8e8e8",
+                            "outline-variant": "#cfc4c5",
+                            tertiary: "#000000",
+                            "on-secondary": "#ffffff",
+                            "error-container": "#ffdad6",
+                            "on-error-container": "#93000a",
+                            error: "#ba1a1a",
+                            primary: "#000000",
+                            "tertiary-container": "#1b1b1b",
+                            "secondary-container": "#e1dfdf",
+                            "on-secondary-container": "#626262",
+                            "on-primary-fixed": "#1b1b1b",
+                            "on-background": "#1a1c1c",
+                            "inverse-surface": "#2f3131",
+                            "on-tertiary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "secondary-fixed": "#e4e2e2",
+                            outline: "#7e7576",
+                            "surface-container": "#eeeeee",
+                            "surface-container-low": "#f3f3f4",
+                            "on-primary-container": "#848484",
+                            "surface-container-highest": "#e2e2e2",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "tertiary-fixed": "#e2e2e2",
+                            "inverse-primary": "#c6c6c6",
+                            "surface-tint": "#5e5e5e",
+                            "on-surface": "#1a1c1c",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-dim": "#dadada",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            background: "#f9f9f9",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "on-error": "#ffffff",
+                            secondary: "#5e5e5e",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        spacing: {
+                            unit: "4px",
+                            "margin-mobile": "16px",
+                            "container-max": "1200px",
+                            gutter: "24px",
+                            "margin-desktop": "40px",
+                        },
+                        fontFamily: {
+                            "body-lg": ["Geist"],
+                            "code-md": ["Geist Mono"],
+                            "headline-lg": ["Geist"],
+                            "label-sm": ["Geist"],
+                            "headline-md": ["Geist"],
+                            display: ["Geist"],
+                            "body-md": ["Geist"],
+                        },
+                        fontSize: {
+                            "body-lg": [
+                                "16px",
+                                { lineHeight: "24px", fontWeight: "400" },
+                            ],
+                            "code-md": [
+                                "14px",
+                                { lineHeight: "20px", fontWeight: "400" },
+                            ],
+                            "headline-lg": [
+                                "24px",
+                                {
+                                    lineHeight: "32px",
+                                    letterSpacing: "-0.015em",
+                                    fontWeight: "600",
+                                },
+                            ],
+                            "label-sm": [
+                                "12px",
+                                {
+                                    lineHeight: "16px",
+                                    letterSpacing: "0.02em",
+                                    fontWeight: "500",
+                                },
+                            ],
+                            "headline-md": [
+                                "20px",
+                                {
+                                    lineHeight: "28px",
+                                    letterSpacing: "-0.015em",
+                                    fontWeight: "600",
+                                },
+                            ],
+                            display: [
+                                "32px",
+                                {
+                                    lineHeight: "40px",
+                                    letterSpacing: "-0.02em",
+                                    fontWeight: "600",
+                                },
+                            ],
+                            "body-md": [
+                                "14px",
+                                { lineHeight: "20px", fontWeight: "400" },
+                            ],
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                font-family: "Geist", sans-serif;
+                background-color: #ffffff;
+            }
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 300,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            .copy-button {
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            .code-container:hover .copy-button {
+                opacity: 1;
+            }
+            ::-webkit-scrollbar {
+                width: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #f9f9f9;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #e5e5e5;
+                border-radius: 3px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #d4d4d8;
+            }
+        </style>
+    </head>
+    <body class="bg-surface text-on-surface">
+        <div class="flex h-screen w-full overflow-hidden">
+            <div
+                id="sidebarOverlay"
+                class="fixed inset-0 bg-black/30 z-40 hidden lg:hidden"
+                onclick="toggleSidebar()"
+            ></div>
+
+            <aside
+                id="sidebar"
+                class="fixed lg:sticky top-0 left-0 z-50 h-screen w-[240px] -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out border-r border-outline-variant bg-surface flex flex-col p-4 flex-shrink-0"
+            >
+                <div class="mb-10 px-2">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 bg-primary rounded flex items-center justify-center"
+                        >
+                            <span
+                                class="material-symbols-outlined text-on-primary text-[20px]"
+                                style="
+                                    font-variation-settings: &quot;FILL&quot; 1;
+                                "
+                                >database</span
+                            >
+                        </div>
+                        <div>
+                            <h1
+                                class="font-headline-md text-headline-md font-bold text-primary"
+                            >
+                                RUC API FREE
+                            </h1>
+                            <p
+                                class="text-[10px] uppercase tracking-widest text-on-surface-variant font-medium"
+                            >
+                                Motor de Datos
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex-1 space-y-1">
+                    <a
+                        href="/"
+                        class="flex items-center gap-3 px-3 py-2 {% if page == 'home' or page == 'detalle' %}bg-secondary-container text-on-secondary-container font-medium{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %} rounded transition-colors duration-200"
+                    >
+                        <span class="material-symbols-outlined">search</span>
+                        <span class="font-body-md text-body-md">Buscar</span>
+                    </a>
+                    <a
+                        href="/docs"
+                        class="flex items-center gap-3 px-3 py-2 {% if page == 'docs' %}bg-secondary-container text-on-secondary-container font-medium{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %} rounded transition-colors duration-200"
+                    >
+                        <span class="material-symbols-outlined"
+                            >description</span
+                        >
+                        <span class="font-body-md text-body-md">API Docs</span>
+                    </a>
+                    <a
+                        href="/estadisticas"
+                        class="flex items-center gap-3 px-3 py-2 {% if page == 'estadisticas' %}bg-secondary-container text-on-secondary-container font-medium{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %} rounded transition-colors duration-200"
+                    >
+                        <span class="material-symbols-outlined">bar_chart</span>
+                        <span class="font-body-md text-body-md"
+                            >Estadísticas</span
+                        >
+                    </a>
+                </nav>
+                <div class="mt-auto pt-6 border-t border-outline-variant">
+                    <p
+                        class="font-body-md text-body-md text-on-surface-variant text-center"
+                    >
+                        v1.0.0
+                    </p>
+                </div>
+            </aside>
+
+            <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+                <header
+                    class="h-16 sticky top-0 z-30 bg-white/80 backdrop-blur-md flex justify-between items-center px-margin-mobile md:px-margin-desktop border-b border-outline-variant flex-shrink-0"
+                >
+                    <div class="flex items-center gap-3 md:gap-8">
+                        <button
+                            onclick="toggleSidebar()"
+                            class="lg:hidden p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all active:scale-95"
+                        >
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        {% if page == 'home' %}
+                        <span
+                            class="font-headline-md text-headline-md font-bold text-primary"
+                            >Buscador RUC</span
+                        >
+                        {% elif page == 'detalle' %}
+                        <span
+                            class="font-headline-md text-headline-md font-bold text-primary"
+                            >Detalle de Empresa</span
+                        >
+                        {% elif page == 'docs' %}
+                        <span
+                            class="font-headline-md text-headline-md font-bold text-primary"
+                            >Documentación</span
+                        >
+                        {% elif page == 'estadisticas' %}
+                        <span
+                            class="font-headline-md text-headline-md font-bold text-primary"
+                            >Estadísticas</span
+                        >
+                        {% endif %}
+                    </div>
+                    <div class="flex items-center gap-2 md:gap-4">
+                        <div
+                            class="h-8 w-px bg-outline-variant mx-1 hidden sm:block"
+                        ></div>
+                        <a
+                            href="https://webnova.pe/"
+                            target="_blank"
+                            rel="noopener"
+                            class="font-label-sm text-label-sm font-semibold hidden sm:inline hover:text-primary transition-colors"
+                            >David Barreto</a
+                        >
+                    </div>
+                </header>
+
+                {% block content %}{% endblock %}
+
+                <footer class="text-center py-6 px-margin-mobile md:px-margin-desktop">
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Desarrollado por
+                        <a href="https://webnova.pe" target="_blank" rel="noopener" class="text-primary font-semibold hover:underline">David Barreto</a>
+                        — <span class="text-on-surface-variant">WebNova.pe</span>
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script>
+            function toggleSidebar() {
+                const sidebar = document.getElementById("sidebar");
+                const overlay = document.getElementById("sidebarOverlay");
+                sidebar.classList.toggle("-translate-x-full");
+                overlay.classList.toggle("hidden");
+            }
+        </script>
+    </body>
+</html>
