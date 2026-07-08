@@ -10,7 +10,8 @@ from fastapi.templating import Jinja2Templates
 from apps.api.app.api.ruc.service import RUCService
 from packages.config.settings import settings
 
-templates = Jinja2Templates(directory="apps/api/app/web/templates", cache_size=0)
+templates = Jinja2Templates(directory="apps/api/app/web/templates")
+templates.env.cache = None
 
 router = APIRouter()
 ruc_service = RUCService()
